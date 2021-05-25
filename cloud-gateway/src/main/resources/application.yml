@@ -1,0 +1,16 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      routes:
+      - id: microservice-one
+        uri: lb://microservice-one
+        predicates:
+        - Path=/one/**
+      - id: microservice-two
+        uri: lb://microservice-two
+        predicates:
+          - Path=/two/**
