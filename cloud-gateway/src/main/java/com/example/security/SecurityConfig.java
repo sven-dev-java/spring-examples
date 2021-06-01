@@ -23,13 +23,18 @@ public class SecurityConfig {
                 .password("kunde")
                 .roles(Roles.KUNDE)
                 .build();
-        return new MapReactiveUserDetailsService(user, kunde);
+        UserDetails student = User.withDefaultPasswordEncoder()
+                .username("student")
+                .password("student")
+                .roles("STUDENT")
+                .build();
+        return new MapReactiveUserDetailsService(user, kunde, student);
     }
 
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
-                .authorizeExchange().anyExchange().hasAnyRole(Roles.ADMIN, Roles.TESTER)
+                .authorizeExchange().anyExchange().hasAnyRole(Roles.getAllRoles())
                 .and()
                 .httpBasic();
         return http.build();
